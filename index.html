@@ -71,10 +71,6 @@
 
     // Texture Loader
     const textureLoader = new THREE.TextureLoader();
-    const woodTexture = textureLoader.load('https://i.imgur.com/5QZQZQZ.jpg'); // Replace with your texture
-    const screenTexture = textureLoader.load('https://i.imgur.com/5QZQZQZ.jpg'); // Replace with your texture
-    const metalTexture = textureLoader.load('https://i.imgur.com/5QZQZQZ.jpg'); // Replace with your texture
-    const glassTexture = textureLoader.load('https://i.imgur.com/5QZQZQZ.png'); // Replace with your texture
 
     // Create developer scene
     function createDeveloperScene() {
@@ -82,14 +78,14 @@
 
       // Desk
       const deskGeometry = new THREE.BoxGeometry(4, 0.2, 2);
-      const deskMaterial = new THREE.MeshPhongMaterial({ map: woodTexture });
+      const deskMaterial = new THREE.MeshPhongMaterial({ color: 0x654321 });
       const desk = new THREE.Mesh(deskGeometry, deskMaterial);
       desk.position.set(0, -1, 0);
       group.add(desk);
 
       // Monitor
       const monitorGeometry = new THREE.BoxGeometry(1.5, 1, 0.1);
-      const monitorMaterial = new THREE.MeshPhongMaterial({ map: screenTexture });
+      const monitorMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff });
       const monitor = new THREE.Mesh(monitorGeometry, monitorMaterial);
       monitor.position.set(0, 0, -0.5);
       group.add(monitor);
@@ -141,13 +137,13 @@
 
       // Microscope
       const microscopeBaseGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.2, 32);
-      const microscopeBaseMaterial = new THREE.MeshPhongMaterial({ map: metalTexture });
+      const microscopeBaseMaterial = new THREE.MeshPhongMaterial({ color: 0xaaaaaa });
       const microscopeBase = new THREE.Mesh(microscopeBaseGeometry, microscopeBaseMaterial);
       microscopeBase.position.set(0, -0.8, 0);
       group.add(microscopeBase);
 
       const microscopeArmGeometry = new THREE.BoxGeometry(0.1, 1, 0.1);
-      const microscopeArmMaterial = new THREE.MeshPhongMaterial({ map: metalTexture });
+      const microscopeArmMaterial = new THREE.MeshPhongMaterial({ color: 0xaaaaaa });
       const microscopeArm = new THREE.Mesh(microscopeArmGeometry, microscopeArmMaterial);
       microscopeArm.position.set(0, -0.3, 0);
       group.add(microscopeArm);
@@ -160,7 +156,7 @@
 
       // Test Tubes
       const testTubeGeometry = new THREE.CylinderGeometry(0.1, 0.1, 0.5, 32);
-      const testTubeMaterial = new THREE.MeshPhongMaterial({ map: glassTexture, transparent: true });
+      const testTubeMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
       for (let i = 0; i < 3; i++) {
         const testTube = new THREE.Mesh(testTubeGeometry, testTubeMaterial);
         testTube.position.set(-1 + i * 1, -0.7, 0.5);
