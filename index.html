@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mohamed Abuhatab - Portfolio</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    #scene-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      color: white;
+      mix-blend-mode: difference;
+    }
+
+    .section {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="scene-container"></div>
+  <div class="overlay">
+    <div class="section">
+      <h1>Mohamed Abuhatab</h1>
+      <p>Pharmaceutical Scientist & Web Developer</p>
+    </div>
+    <div class="section">
+      <h2>Web Development</h2>
+      <p>Full-stack development with modern technologies</p>
+    </div>
+    <div class="section">
+      <h2>Pharmaceutical Science</h2>
+      <p>Medicinal chemistry & drug development expertise</p>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/three.min.js"></script>
+  <script>
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('scene-container').appendChild(renderer.domElement);
+
+    // Texture Loader
+    const textureLoader = new THREE.TextureLoader();
+    const woodTexture = textureLoader.load('https://i.imgur.com/5QZQZQZ.jpg'); // Replace with your texture
+    const screenTexture = textureLoader.load('https://i.imgur.com/5QZQZQZ.jpg'); // Replace with your texture
+    const metalTexture = textureLoader.load('https://i.imgur.com/5QZQZQZ.jpg'); // Replace with your texture
+    const glassTexture = textureLoader.load('https://i.imgur.com/5QZQZQZ.png'); // Replace with your texture
+
+    // Create developer scene
+    function createDeveloperScene() {
+      const group = new THREE.Group();
+
+      // Desk
+      const deskGeometry = new THREE.BoxGeometry(4, 0.2, 2);
+      const deskMaterial = new THREE.MeshPhongMaterial({ map: woodTexture });
+      const desk = new THREE.Mesh(deskGeometry, deskMaterial);
+      desk.position.set(0, -1, 0);
+      group.add(desk);
+
+      // Monitor
+      const monitorGeometry = new THREE.BoxGeometry(1.5, 1, 0.1);
+      const monitorMaterial = new THREE.MeshPhongMaterial({ map: screenTexture });
+      const monitor = new THREE.Mesh(monitorGeometry, monitorMaterial);
+      monitor.position.set(0, 0, -0.5);
+      group.add(monitor);
+
+      // Keyboard
+      const keyboardGeometry = new THREE.BoxGeometry(1.2, 0.1, 0.5);
+      const keyboardMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
+      const keyboard = new THREE.Mesh(keyboardGeometry, keyboardMaterial);
+      keyboard.position.set(0, -0.5, 0.5);
+      group.add(keyboard);
+
+      // Keyboard keys animation
+      const keyboardKeys = [];
+      for (let i = 0; i < 10; i++) {
+        const keyGeometry = new THREE.BoxGeometry(0.1, 0.05, 0.1);
+        const keyMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
+        const key = new THREE.Mesh(keyGeometry, keyMaterial);
+        key.position.set(-0.5 + i * 0.1, -0.5, 0.5);
+        keyboardKeys.push(key);
+        keyboard.add(key);
+      }
+
+      // Chair
+      const chairSeatGeometry = new THREE.BoxGeometry(1, 0.2, 1);
+      const chairSeatMaterial = new THREE.MeshPhongMaterial({ color: 0x808080 });
+      const chairSeat = new THREE.Mesh(chairSeatGeometry, chairSeatMaterial);
+      chairSeat.position.set(2, -1.5, 0);
+      group.add(chairSeat);
+
+      const chairBackGeometry = new THREE.BoxGeometry(1, 1, 0.2);
+      const chairBackMaterial = new THREE.MeshPhongMaterial({ color: 0x808080 });
+      const chairBack = new THREE.Mesh(chairBackGeometry, chairBackMaterial);
+      chairBack.position.set(2, -0.5, -0.5);
+      group.add(chairBack);
+
+      return { group, keyboardKeys };
+    }
+
+    // Create lab scene
+    function createLabScene() {
+      const group = new THREE.Group();
+
+      // Lab Table
+      const tableGeometry = new THREE.BoxGeometry(4, 0.2, 2);
+      const tableMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+      const table = new THREE.Mesh(tableGeometry, tableMaterial);
+      table.position.set(0, -1, 0);
+      group.add(table);
+
+      // Microscope
+      const microscopeBaseGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.2, 32);
+      const microscopeBaseMaterial = new THREE.MeshPhongMaterial({ map: metalTexture });
+      const microscopeBase = new THREE.Mesh(microscopeBaseGeometry, microscopeBaseMaterial);
+      microscopeBase.position.set(0, -0.8, 0);
+      group.add(microscopeBase);
+
+      const microscopeArmGeometry = new THREE.BoxGeometry(0.1, 1, 0.1);
+      const microscopeArmMaterial = new THREE.MeshPhongMaterial({ map: metalTexture });
+      const microscopeArm = new THREE.Mesh(microscopeArmGeometry, microscopeArmMaterial);
+      microscopeArm.position.set(0, -0.3, 0);
+      group.add(microscopeArm);
+
+      const microscopeLensGeometry = new THREE.SphereGeometry(0.2, 32, 32);
+      const microscopeLensMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+      const microscopeLens = new THREE.Mesh(microscopeLensGeometry, microscopeLensMaterial);
+      microscopeLens.position.set(0, 0.2, 0);
+      group.add(microscopeLens);
+
+      // Test Tubes
+      const testTubeGeometry = new THREE.CylinderGeometry(0.1, 0.1, 0.5, 32);
+      const testTubeMaterial = new THREE.MeshPhongMaterial({ map: glassTexture, transparent: true });
+      for (let i = 0; i < 3; i++) {
+        const testTube = new THREE.Mesh(testTubeGeometry, testTubeMaterial);
+        testTube.position.set(-1 + i * 1, -0.7, 0.5);
+        group.add(testTube);
+      }
+
+      return { group, microscopeArm };
+    }
+
+    // Add scenes to the scene
+    const { group: developerScene, keyboardKeys } = createDeveloperScene();
+    const { group: labScene, microscopeArm } = createLabScene();
+    scene.add(developerScene);
+    scene.add(labScene);
+    labScene.position.y = -window.innerHeight / 100;
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(10, 10, 5);
+    scene.add(directionalLight);
+
+    // Camera position
+    camera.position.z = 5;
+
+    // Smooth scroll variables
+    let scrollY = window.scrollY;
+    let targetScrollY = scrollY;
+    let ease = 0.1;
+
+    // Update scroll target
+    window.addEventListener('scroll', () => {
+      targetScrollY = window.scrollY;
+    });
+
+    // Smooth scroll function
+    function smoothScroll() {
+      scrollY += (targetScrollY - scrollY) * ease;
+      developerScene.position.y = scrollY * 0.01;
+      labScene.position.y = -window.innerHeight / 100 + scrollY * 0.01;
+      camera.position.y = -scrollY * 0.01;
+    }
+
+    // Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Smooth scroll
+      smoothScroll();
+
+      // Animate keyboard keys
+      keyboardKeys.forEach((key, index) => {
+        key.position.y = -0.5 + Math.sin(Date.now() * 0.001 + index) * 0.05;
+      });
+
+      // Animate microscope arm
+      microscopeArm.rotation.x = Math.sin(Date.now() * 0.001) * 0.2;
+
+      // Rotate scenes for a dynamic effect
+      developerScene.rotation.y += 0.01;
+      labScene.rotation.y -= 0.01;
+
+      // Render the scene
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
